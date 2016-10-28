@@ -7,8 +7,8 @@ int f[10001][10001];
 
 int main(){
     #ifndef ONLINE_JUDGE
-        freopen("xauchung.inp", "r", stdin);
-        freopen("xauchung.out", "w", stdout);
+        freopen("QBSTR.inp", "r", stdin);
+        freopen("QBSTR.out", "w", stdout);
     #endif // ONLINE_JUDGE
     cin >> s1 >> s2;
     s1 = ' ' + s1;
