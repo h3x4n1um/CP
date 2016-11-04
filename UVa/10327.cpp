@@ -17,11 +17,13 @@ int main(){
         }
         while (!q.empty()){
             for (int i = 0; i < a.size(); ++i){
-                int j = i;
-                while (a[j] == q.top() && a[j] > a[j + 1] && j + 1 < a.size()){
-                    swap(a[j], a[j + 1]);
-                    ++j;
-                    ++ans;
+                if (a[i] == q.top()){
+                    int j = i;
+                    while (a[j] > a[j + 1] && j + 1 < a.size()){
+                        swap(a[j], a[j + 1]);
+                        ++j;
+                        ++ans;
+                    }
                 }
             }
             q.pop();
