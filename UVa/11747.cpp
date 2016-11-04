@@ -31,24 +31,26 @@ bool cmp(edge p, edge q){
 
 void kruskal(const vector <edge> a, const int n){
     ufds graph;
+    vector <int> ans;
     graph.initSet(n);
     for (int i = 0; i < a.size(); ++i){
         int u = a[i].u, v = a[i].v, w = a[i].w;
-        if (!graph.sameSet(u, v)){
-            graph.unionSet(u, v);
-
+        if (!graph.sameSet(u, v)) graph.unionSet(u, v);
+        else ans.push_back(w);
+    }
+    if (ans.size() > 0){
+        for (int i = 0; i < ans.size(); ++i){
+            printf("%d", ans[i]);
+            if (i + 1 < ans.size()) printf(" ");
         }
     }
+    else printf("forest");
 }
 
 int n, m;
 
 int main(){
-    #ifndef ONLINE_JUDGE
-        freopen("11747.inp", "r", stdin);
-        freopen("11747.out", "w", stdout);
-    #endif // ONLINE_JUDGE
-    while (scanf("%d%d", &n, &m), n != 0 || m != 0){
+    while (scanf("%d%d", &n, &m) && n != 0 && m != 0){
         vector <edge> a;
         for (int i = 0; i < m; ++i){
             edge temp;
