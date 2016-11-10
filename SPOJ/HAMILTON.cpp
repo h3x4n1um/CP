@@ -2,41 +2,41 @@
 
 using namespace std;
 
-int n, m, kq[100];
-bool a[100][100], visited[100];
+int n, m;
+bool went[35];
+vector <int> a[35];
+vector <int> ans;
 
-void hamilton(int i, int k){
-    if (k == n){
-        if (kq[k - 1] != 1) return;
-        if (kq[k - 1] == 1){
-            for (int q = 0; q < n; ++q) printf("%2d", kq[q]);
-            exit(0);
+void hamilton(const int u){
+    ans.push_back(u);
+    if (ans.size() == n){
+        if (find(a[u].begin(), a[u].end(), 1) != a[u].end()){
+            ans.push_back(1);
+            for (int i = 0; i < ans.size(); ++i){
+                printf("%d ", ans[i]);
+            }
+            return;
         }
     }
-    for (int j = 1; j <= n; ++j){
-        if (visited[j] == false){
-            if (a[i][j]){
-                kq[k] = j;
-                visited[j] = true;
-                hamilton(j, k + 1);
-                visited[j] = false;
-            }
+    went[u] = true;
+    for (int i = 0; i < a[u].size(); ++i){
+        int v = a[u][i];
+        if (!went[v]){
+            hamilton(v);
+            went[v] = false;
+            ans.erase(ans.end() - 1);
         }
     }
 }
 
 int main(){
-    freopen("HAMILTON.inp", "r", stdin);
-    int temp1, temp2;
-    memset(visited, false, sizeof visited);
-    memset(a, false, sizeof a);
-    scanf("%D%D", &n, &m);
+    scanf("%d%d", &n, &m);
     for (int i = 0; i < m; ++i){
-        scanf("%d%d", &temp1, &temp2);
-        a[temp1][temp2] = true;
+        int u, v;
+        scanf("%d%d", &u, &v);
+        a[u].push_back(v);
+        a[v].push_back(u);
     }
-    kq[0] = 1;
-    visited[1] == true;
-    hamilton(1, 1);
+    hamilton(1);
     return 0;
 }
