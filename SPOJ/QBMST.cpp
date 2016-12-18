@@ -2,62 +2,122 @@
 
 using namespace std;
 
-struct edge{
-    public:
-        int u, v, w;
-};
-
-struct ufds{
-    public:
-        void initSet(int ii){
-            for (int i = 1; i <= ii; ++i) pSet[i] = i;
+namespace Kruskal{
+    /*IMPLEMEMT EDGE*/
+    struct edge{
+        public:
+            int u, v, c;
+            bool operator<(const edge q) const{
+                return this->c < q.c;
+            }
+            bool operator>(const edge q) const{
+                return this->c > q.c;
+            }
+            bool operator==(const edge q) const{
+                return this->c == q.c;
+            }
+    };
+    /*IMPLEMEMT UFDS*/
+    struct ufds{
+        public:
+            ufds (int ii){
+                this->init(ii);
+            }
+            void init(int ii){
+                pSet = new int [ii + 1];
+                for (int i = 1; i <= ii; ++i) pSet[i] = i;
+            }
+            int find(int i){
+                return (pSet[i] == i ? i : pSet[i] = find(pSet[i]));
+            }
+            bool same(int i, int j){
+                return pSet[find(i)] == pSet[find(j)];
+            }
+            void merge(int i, int j){
+                pSet[find(i)] = find(j);
+            }
+            void clear(){
+                delete [] pSet;
+            }
+        private:
+            int *pSet;
+    };
+    /*INIT DATA*/
+    int n, m;
+    vector <edge> a;
+    /*KRUSKAL ALGORITHM*/
+    int Kruskal(){
+        int res = 0;
+        ufds q(n);
+        for (int i = 0; i < a.size(); ++i){
+            int u = a[i].u, v = a[i].v, c = a[i].c;
+            if (!q.same(u, v)){
+                q.merge(u, v);
+                res += c;
+            }
         }
-        int findSet(int i){
-            return (pSet[i] == i ? i : pSet[i] = findSet(pSet[i]));
+        return res;
+    }
+    /*EXCUTE FUNCTION*/
+    void excute(){
+        scanf("%d%d", &n, &m);;
+        for (int i = 0; i < m; ++i){
+            edge temp;
+            scanf("%d%d%d", &temp.u, &temp.v, &temp.c);
+            a.push_back(temp);
         }
-        void unionSet(int i, int j){
-            pSet[findSet(i)] = findSet(j);
-        }
-        bool sameSet(int i, int j){
-            return pSet[findSet(i)] == pSet[findSet(j)];
-        }
-    private:
-        int pSet[10005];
-};
-
-bool cmp(edge p, edge q){
-    return (p.w < q.w);
+        sort(a.begin(), a.end());
+        Kruskal();
+    }
 }
 
-void kruskal(const vector <edge> a, const int n){
-    int ans = 0;
-    ufds graph;
-    graph.initSet(n);
-    for (int i = 0; i < a.size(); ++i){
-        int u = a[i].u, v = a[i].v, w = a[i].w;
-        if (!graph.sameSet(u, v)){
-            graph.unionSet(u, v);
-            ans += w;
+namespace Prim{
+    /*INIT DATA*/
+    int n, m;
+    vector <pair <int, int> > a[10007];
+    /*PRIM ALGORITHM*/
+    int Prim(){
+        int d[10007], res = 0;
+        set <pair <int, int> > f;
+        for (int i = 1; i <= n; ++i){
+            d[i] = 1000000007;
+        }
+        d[1] = 0;
+        f.insert(make_pair(d[1], 1));
+        while(!f.empty()){
+            set <pair <int, int> >::iterator it = f.begin();
+            int u = it->second;
+            f.erase(it);
+            for (int i = 0; i < a[u].size(); ++i){
+                int v = a[u][i].first, c = a[u][i].second;
+                if (d[v] > c){
+                    f.erase(make_pair(d[v], v));
+                    d[v] = c;
+                    f.insert(make_pair(d[v], v));
+                }
+            }
+        }
+        for (int i = 1; i <= n; ++i){
+            if (d[i] < 1000000007) res += d[i];
+        }
+        return res;
+    }
+    /*EXCUTE FUNCTION*/
+    void excute(){
+        scanf("%d%d", &n, &m);
+        for (int i = 0; i < m; ++i){
+            int u, v, c;
+            scanf("%d%d%d", &u, &v, &c);
+            a[u].push_back(make_pair(v, c));
         }
     }
-    printf("%d", ans);
 }
-
-int n, m;
 
 int main(){
-    #ifndef ONLINE_JUDGE
-        freopen("QBMST.inp", "r", stdin);
-        freopen("QBMST.out", "w", stdout);
-    #endif // ONLINE_JUDGE
-    scanf("%d%d", &n, &m);
-    vector <edge> a;
-    for (int i = 0; i < m; ++i){
-        edge temp;
-        scanf("%d%d%d", &temp.u, &temp.v, &temp.w);
-        a.push_back(temp);
-    }
-    sort(a.begin(), a.end(), cmp);
-    kruskal(a, n);
+    freopen("QBMST.inp", "r", stdin);
+
+    Kruskal::excute();
+
+    printf("%d", Kruskal::Kruskal());
     return 0;
 }
