@@ -60,7 +60,7 @@ namespace Kruskal{
     }
     /*EXCUTE FUNCTION*/
     void excute(){
-        scanf("%d%d", &n, &m);;
+        scanf("%d%d", &n, &m);
         for (int i = 0; i < m; ++i){
             edge temp;
             scanf("%d%d%d", &temp.u, &temp.v, &temp.c);
