@@ -79,7 +79,6 @@ int main(){
         ans += f[s][i];
     }
 
-
     printf("Maximum Flow: %d\nMinimum Cut:\n", ans);
     for (int i = 1; i <= n; ++i){
         if (trace[i] != 0){
