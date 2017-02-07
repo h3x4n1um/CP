@@ -1,2 +1,3 @@
 git config --global user.email "boly456@gmail.com"
 git config --global user.name "oobol2000oo"
+git remote add Homework https://github.com/oobol2000oo/Homework
