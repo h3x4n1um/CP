@@ -18,5 +18,6 @@ int main(){
         else *it = a[i];
     }
     printf("%d", f.size());
+    delete [] a;
     return 0;
 }
