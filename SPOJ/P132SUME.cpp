@@ -57,47 +57,37 @@ struct point{
         int x, y;
 };
 
-struct line{
-    public:
-        line(){
-            a = 0;
-            b = 0;
-            c = 0;
-        }
-        line(point A, point B){
-            a = B.getY() - A.getY();
-            b = A.getX() - B.getX();
-            c = B.getX() * A.getY() - B.getY() * A.getX();
-        }
+double length(point M, point N){
+    return sqrt(pow(M.getX() - N.getX(), 2) + pow(M.getY() - N.getY(), 2));
+}
 
-        bool isParallel(const line other) const{
-            return ((float) a * other.b == other.a * b && (float) other.a * c != a * other.c);
-        }
-        bool isSame(const line other) const{
-            return ((float) a * other.b == other.a * b && (float) other.a * c == a * other.c);
-        }
-        bool isIntersac(const line other) const{
-            return ((float) a * other.b != (float) other.a * b);
-        }
-
-        int f(point q){
-            return a * q.getX() + b * q.getY() + c;
-        }
-    private:
-        int a, b, c;
-};
-
-int n;
-
-int intersacLine(point A, point B, point C, point D){
-    line x(A, B), y(C, D);
-    if (x.isSame(y)) return -1;
-    if (x.f(C) > 0 || x.f(D) > 0 || y.f(A) > 0 || y.f(B) > 0) return 0;
-    return 1;
+double area(point A, point B, point C){
+    double c = length(A, B);
+    double b = length(A, C);
+    double a = length(B, C);
+    double p = (a + b + c) / 2;
+    return sqrt(p * (p - a) * (p - b) * (p - c));
 }
 
 int main(){
-    point A(1, 2), B(1, 2), C(1, 2), D(1, 2);
-    cout << intersacSegment(A, B, C, D);
+    #ifndef ONLINE_JUDGE
+        freopen("P132SUME.inp", "r", stdin);
+        freopen("P132SUME.out", "w", stdout);
+    #endif // ONLINE_JUDGE
+    point A, B, C;
+    int N, ans = 0;
+    A.readPoint();
+    B.readPoint();
+    C.readPoint();
+    scanf("%d", &N);
+    double s = area(A, B, C);
+    for (int i = 1; i <= N; ++i){
+        point D;
+        D.readPoint();
+        double s_temp = area(A, B, D) + area(A, C, D) + area(B, C, D);
+        cout << s << ' ' << s_temp << endl;
+        if (s == s_temp) ++ans;
+    }
+    printf("%.1f\n%d", s, ans);
     return 0;
 }
