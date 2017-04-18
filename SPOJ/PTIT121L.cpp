@@ -2,16 +2,29 @@
 
 using namespace std;
 
-long long int s, a, b, can;
+long long area, edge;
+vector <pair <long long, long long> > a;
 
 int main(){
-    //freopen("PTIT121L.inp", "r", stdin);
+    #ifndef ONLINE_JUDGE
+        freopen("PTIT121L.inp", "r", stdin);
+    #endif // ONLINE_JUDGE
     for (int i = 0; i < 3; ++i){
-        cin >> a >> b;
-        s = s + a * b;
+        long long _a, _b;
+        cin >> _a >> _b;
+        a.push_back(make_pair(_a, _b));
+        area += _a * _b;
     }
-    can = (long long int) sqrt(s);
-    if (can * can == s) cout << can;
-    else cout << 0;
+    edge = sqrt(area);
+    if (edge * edge != area) cout << 0;
+    else{
+        for (int i = 0; i < 3; ++i){
+            if (a[i].first > edge || a[i].second > edge){
+                cout << 0;
+                return 0;
+            }
+        }
+        cout << edge;
+    }
     return 0;
 }
