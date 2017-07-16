@@ -4,6 +4,7 @@ using namespace std;
 
 struct point{
     public:
+        int x, y;
         /*CONSTRUCTOR*/
         point(){
             x = 0;
@@ -30,19 +31,11 @@ struct point{
         bool operator != (const point other) const{
             return !(*this == other);
         }
-        /*FUNCTION*/
-        int getX(){
-            return x;
-        }
-        int getY(){
-            return y;
-        }
-    private:
-        int x, y;
 };
 
 struct line{
     public:
+        int a, b, c;
         /*CONSTRUCTOR*/
         line(){
             a = 0;
@@ -50,9 +43,9 @@ struct line{
             c = 0;
         }
         line(point A, point B){
-            a = B.getY() - A.getY();
-            b = A.getX() - B.getX();
-            c = B.getX() * A.getY() - B.getY() * A.getX();
+            a = B.y - A.y;
+            b = A.x - B.x;
+            c = B.x * A.y - B.y * A.x;
         }
         /*FUNCTION*/
         bool isParallel(const line other) const{
@@ -64,14 +57,13 @@ struct line{
         bool isIntersac(const line other) const{
             return ((float) a * other.b != (float) other.a * b);
         }
-        int f(point q){
-            return a * q.getX() + b * q.getY() + c;
+        int f(point A){
+            return a * A.x + b * A.y + c;
         }
-    private:
-        int a, b, c;
+        float distTo(point A){
+            return fabs(f(A) / sqrt(a * a + b * b));
+        }
 };
-
-int n;
 
 int intersacLine(point A, point B, point C, point D){
     line x(A, B), y(C, D);
@@ -80,8 +72,18 @@ int intersacLine(point A, point B, point C, point D){
     return 1;
 }
 
+int n;
+
 int main(){
-    point A(1, 2), B(1, 2), C(1, 2), D(1, 2);
-    cout << intersacSegment(A, B, C, D);
+    freopen("timdiem8f.inp", "r", stdin);
+    freopen("timdiem8f.out", "w", stdout);
+    int x, y;
+    scanf("%d%d", &x, &y);
+    point A(x, y);
+    scanf("%d%d", &x, &y);
+    point B(x, y);
+    if (B.y * A.y > 0) B.y = -B.y;
+    line d(A, B);
+    printf("%.8f", (float) - d.c / d.a);
     return 0;
 }
