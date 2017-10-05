@@ -2,29 +2,27 @@
 
 using namespace std;
 
-int t;
-int f[100005];
-
-int dp(int p){
-    if (p <= 2) return f[p] = p - 1;
-    if (f[p] < 1000000007) return f[p];
-    if (p % 3 == 0) f[p] = min(f[p], dp(p / 3) + 1);
-    if (p % 2 == 0) f[p] = min(f[p], dp(p / 2) + 1);
-    f[p] = min(f[p], dp(p - 1) + 1);
-    return f[p];
-}
+int n;
+string s;
+int f[1000005], g[1000005];
 
 int main(){
     freopen("biendoi.inp", "r", stdin);
     freopen("biendoi.out", "w", stdout);
-    scanf("%d", &t);
-    for (int i = 1; i <= 100000; ++i){
-        f[i] = 1000000007;
+    scanf("%d", &n);
+    cin >> s;
+    f[0] = (s[0] != 'A');
+    g[0] = (s[0] != 'B');
+    for (int i = 1; i < s.size(); ++i){
+        if (s[i] == 'A'){
+            f[i] = f[i - 1];
+            g[i] = min(f[i - 1], g[i - 1]) + 1;
+        }
+        else if (s[i] == 'B'){
+            g[i] = g[i - 1];
+            f[i] = min(f[i - 1], g[i - 1]) + 1;
+        }
     }
-    while(t-- > 0){
-        int n;
-        scanf("%d", &n);
-        printf("%d\n", dp(n));
-    }
+    printf("%d", f[s.size() - 1]);
     return 0;
 }

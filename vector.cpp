@@ -50,9 +50,9 @@ int main(){
     }
     printf("%d", ans);*/
     for (int i = 0; i < n; ++i){
-        vector<vec>::iterator it = upper_bound(q.begin(), q.end(), a[i]);
+        auto it = lower_bound(q.begin(), q.end(), a[i]);
         if (it == q.end()) q.push_back(a[i]);
-        else (a[i] < *it) *it = a[i];
+        else *it = a[i];
     }
     printf("%d", q.size());
     return 0;
