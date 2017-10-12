@@ -6,7 +6,7 @@ int s, k, n;
 int ans[25];
 vector <int> a[25];
 
-void choose(int i, int temp){
+void choose(int zi, int temp){
     if (temp == s && i <= k) return;
     if (i > k){
         if (temp == s){
